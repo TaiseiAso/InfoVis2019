@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>W02: Task 1</title>
+    </head>
+    <body>
+        <h1>Task 1</h2>
+        <hr>
+
+        <form name="numForm">
+            <div>
+                <input type="text" name="num1" value="4">
+                <input type="text" name="num2" value="5">
+                <input type="text" name="num3" value="8">
+            </div>
+            <input  type="button"
+                    value="START"
+                    id="calc">
+            <input type="text" name="ans">
+        </form>
+
+        <script src="vec3.js"></script>
+        <script>
+            var element = document.getElementById('calc');
+            element.addEventListener('click',
+                function (){
+                    var x = document.numForm.num1.value;
+                    var y = document.numForm.num2.value;
+                    var z = document.numForm.num3.value;
+
+                    var v = new Vec3(x, y, z);
+                    var min = v.min();
+                    var mid = v.mid();
+                    var max = v.max();
+
+                    document.numForm.ans.value = "min:" + min + ", mid:" + mid + ", max:" + max;
+                }
+            )
+        </script>
+    </body>
+</html>

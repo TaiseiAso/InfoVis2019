@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>W02: Task 2</title>
+    </head>
+    <body>
+        <h1>Task 2</h2>
+        <hr>
+
+        <form name="numForm">
+            <div>
+                input vertex 0:
+                <input type="text" name="num1">
+                <input type="text" name="num2">
+                <input type="text" name="num3">
+            </div>
+            <div>
+                input vertex 1:
+                <input type="text" name="num4">
+                <input type="text" name="num5">
+                <input type="text" name="num6">
+            </div>
+            <div>
+                input vertex 2:
+                <input type="text" name="num7">
+                <input type="text" name="num8">
+                <input type="text" name="num9">
+            </div>
+            <input  type="button"
+                    value="START"
+                    id="calc">
+            <input type="text" name="ans">
+        </form>
+
+        <script src="vec3.js"></script>
+        <script>
+            var element = document.getElementById('calc');
+            element.addEventListener('click',
+                function (){
+                    var x0 = document.numForm.num1.value;
+                    var y0 = document.numForm.num2.value;
+                    var z0 = document.numForm.num3.value;
+                    var x1 = document.numForm.num4.value;
+                    var y1 = document.numForm.num5.value;
+                    var z1 = document.numForm.num6.value;
+                    var x2 = document.numForm.num7.value;
+                    var y2 = document.numForm.num8.value;
+                    var z2 = document.numForm.num9.value;
+
+                    var v0 = new Vec3(x0, y0, z0);
+                    var v1 = new Vec3(x1, y1, z1);
+                    var v2 = new Vec3(x2, y2, z2);
+                    var S = AreaOfTriangle(v0, v1, v2);
+
+                    document.numForm.ans.value = S;
+                }
+            )
+        </script>
+    </body>
+</html>
