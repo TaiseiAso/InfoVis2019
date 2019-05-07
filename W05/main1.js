@@ -63,8 +63,6 @@ function main(){
     var cube = new THREE.Mesh( geometry, material );
     scene.add( cube );
 
-    document.addEventListener( 'mousedown', mouse_down_event );
-
     loop();
 
     function loop() {
@@ -72,31 +70,5 @@ function main(){
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
         renderer.render( scene, camera );
-    }
-
-    function mouse_down_event( event ) {
-        var x_win = event.clientX;
-        var y_win = event.clientY;
-
-        var vx = renderer.domElement.offsetLeft;
-        var vy = renderer.domElement.offsetTop;
-        var vw = renderer.domElement.width;
-        var vh = renderer.domElement.height;
-
-        var x_NDC = 2*( x_win - vx )/vw - 1;
-        var y_NDC = -( 2*( y_win - vy )/vh - 1 );
-
-        var p_NDC = new THREE.Vector3( x_NDC, y_NDC, 1 );
-        var p_wld = p_NDC.unproject( camera );
-
-        var origin = camera.position;
-        var direction = p_wld.sub(origin).normalize();
-
-        var raycaster = new THREE.Raycaster( origin, direction );
-        var intersects = raycaster.intersectObject( cube );
-        if ( intersects.length > 0 ) {
-            intersects[0].face.color.setRGB( 0.7, 0.3, 0.3 );
-            intersects[0].object.geometry.colorsNeedUpdate = true;
-        }
     }
 }
