@@ -24,9 +24,11 @@
     	 void main() {
              point_position = modelViewMatrix * vec4( position, 1.0 );
              normal_vector = normalMatrix * normal;
+
              vec3 C = color;
              vec3 L = normalize( light_position - point_position.xyz );
              vec3 N = normalize( normal_vector );
+
              point_color = LambertianReflection( C, L, N );
              gl_Position = projectionMatrix * point_position;
          }
@@ -39,7 +41,7 @@
     	     gl_FragColor = vec4( point_color, 1.0 );
     	 }
 	</script>
-	<script src="main.js"></script>
+	<script src="main1.js"></script>
 	<script>
 	 main();
 	</script>
