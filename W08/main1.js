@@ -38,6 +38,11 @@ function main()
         0.8     // S2
     ];
 
+    // range of values
+    var min_scalar = 0.1;
+    var max_scalar = 0.8;
+    var range_scalar = max_scalar - min_scalar;
+
     // Create color map
     var cmap = [];
     for ( var i = 0; i < 256; i++ )
@@ -89,9 +94,9 @@ function main()
 
         // Change to array
         var Ss = [
-            Math.floor( 255 * scalars[ id[0] ] / 0.8 ),
-            Math.floor( 255 * scalars[ id[1] ] / 0.8 ),
-            Math.floor( 255 * scalars[ id[2] ] / 0.8 )
+            Math.floor( 255 * ( scalars[ id[0] ] - min_scalar ) / range_scalar ),
+            Math.floor( 255 * ( scalars[ id[1] ] - min_scalar ) / range_scalar ),
+            Math.floor( 255 * ( scalars[ id[2] ] - min_scalar ) / range_scalar )
         ];
 
         // Add
