@@ -12,7 +12,11 @@ function main( isovalue )
     var bounds = Bounds( volume );
     screen.scene.add( bounds );
 
-    var surfaces = Isosurfaces( volume, isovalue );
+    var light = new THREE.PointLight();
+    light.position.set( 10, 10, 10 );
+    screen.scene.add( light );
+
+    var surfaces = Isosurfaces( volume, isovalue, screen.light );
     screen.scene.add( surfaces );
 
     document.addEventListener( 'mousemove', function() {

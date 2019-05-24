@@ -5,7 +5,6 @@ function Isosurfaces( volume, isovalue )
 
     var smin = volume.min_value;
     var smax = volume.max_value;
-    var srange = smax - smin;
     isovalue = KVS.Clamp( isovalue, smin, smax );
 
     var lut = new KVS.MarchingCubesTable();
@@ -63,7 +62,8 @@ function Isosurfaces( volume, isovalue )
 
     geometry.computeVertexNormals();
 
-    var S = ( isovalue - smin ) / srange;
+    // Rainbow color map
+    var S = ( isovalue - smin ) / ( smax - smin );
     var R = Math.max( Math.cos( ( S - 1.0 ) * Math.PI ), 0.0 );
     var G = Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
     var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
@@ -114,9 +114,8 @@ function Isosurfaces( volume, isovalue )
 
     function interpolated_vertex( v0, v1, s )
     {
-        return new THREE.Vector3().addVectors(
-            v0.multiplyScalar( smax - s ),
-            v1.multiplyScalar( s - smin )
-        ).divideScalar( srange );
+        var s0 = volume.values[ v0.x + v0.y*volume.resolution.x + v0.z*volume.resolution.x*volume.resolution.y ][0];
+        var s1 = volume.values[ v1.x + v1.y*volume.resolution.x + v1.z*volume.resolution.x*volume.resolution.y ][0];
+        return new THREE.Vector3().addScaledVector( v0, s1 - s ).addScaledVector( v1, s - s0 ).divideScalar( s1 - s0 );
     }
 }
