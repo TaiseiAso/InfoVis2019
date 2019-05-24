@@ -1,0 +1,61 @@
+<html>
+    <head>
+	<title>W06: Task 3</title>
+    </head>
+    <body>
+	<script src="https://threejs.org/build/three.min.js"></script>
+
+	<script type="x-shader/x-vertex" id="blinnPhong.vert">
+        varying vec3 point_color;
+        varying vec4 point_position;
+        varying vec3 normal_vector;
+        varying vec3 viewing_direction;
+
+         void main() {
+             point_color = color;
+             point_position = modelViewMatrix * vec4( position, 1.0 );
+             normal_vector = normalMatrix * normal;
+             viewing_direction = normalMatrix * cameraPosition;
+
+             gl_Position = projectionMatrix * point_position;
+         }
+	</script>
+
+	<script type="x-shader/x-fragment" id="blinnPhong.frag">
+         varying vec3 point_color;
+         varying vec4 point_position;
+         varying vec3 normal_vector;
+         varying vec3 viewing_direction;
+         uniform vec3 light_position;
+
+         vec3 BlinnPhongReflection( vec3 C, vec3 L, vec3 N, vec3 V ) {
+             float ka = 0.3;
+             float kd = 0.5;
+             float ks = 0.8;
+             float n = 50.0;
+             
+             float dd = max( dot( N, L ), 0.0 );
+             float ds = pow( max( dot( normalize( V + L ), N ), 0.0 ), n );
+             if ( dd <= 0.0 ) { ds = 0.0; }
+             float Ia = ka;
+             float Id = kd * dd;
+             float Is = ks * ds;
+             return C * ( Ia + Id + Is );
+         }
+
+          void main() {
+              vec3 C = point_color;
+              vec3 L = normalize( light_position - point_position.xyz );
+              vec3 N = normalize( normal_vector );
+              vec3 V = normalize( viewing_direction );
+
+              vec3 shaded_color = BlinnPhongReflection( C, L, N, V );
+              gl_FragColor = vec4( shaded_color, 1.0 );
+     	 }
+	</script>
+	<script src="main3.js"></script>
+	<script>
+	 main();
+	</script>
+    </body>
+</html>

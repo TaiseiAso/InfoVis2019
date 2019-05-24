@@ -1,0 +1,21 @@
+<html>
+    <head>
+	       <title>W09: Task 02</title>
+    </head>
+    <input type="range" name="input" style="width:150px" class="slider"
+    value="128" min="0" max="255" step="1" id="inp">
+    <body style="margin:0">
+    	<script src="three.min.js"></script>
+    	<script src="TrackballControls.js"></script>
+    	<script src="http://threejs.org/examples/js/math/Lut.js"></script>
+    	<script src="http://naohisas.github.io/KVS.js/Build/KVS.min.js"></script>
+    	<script src="http://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script>
+    	<script src="http://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
+    	<script src="Bounds.js"></script>
+    	<script src="Isosurfaces.js"></script>
+    	<script src="main2.js"></script>
+    	<script>
+    	   main( input.val() /* isovalue */ );
+    	</script>
+    </body>
+</html>

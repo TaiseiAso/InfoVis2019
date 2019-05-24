@@ -1,0 +1,90 @@
+<html>
+    <head>
+	<title>W06: Task 4</title>
+    </head>
+    <body>
+	<script src="https://threejs.org/build/three.min.js"></script>
+
+	<script type="x-shader/x-vertex" id="cookTorrance.vert">
+        varying vec3 point_color;
+        varying vec4 point_position;
+        varying vec3 normal_vector;
+        varying vec3 viewing_direction;
+
+         void main() {
+             point_color = color;
+             point_position = modelViewMatrix * vec4( position, 1.0 );
+             normal_vector = normalMatrix * normal;
+             viewing_direction = normalMatrix * cameraPosition;
+
+             gl_Position = projectionMatrix * point_position;
+         }
+	</script>
+
+	<script type="x-shader/x-fragment" id="cookTorrance.frag">
+         varying vec3 point_color;
+         varying vec4 point_position;
+         varying vec3 normal_vector;
+         varying vec3 viewing_direction;
+         uniform vec3 light_position;
+
+         float BechmannDistribution( float d, float m ) {
+             float d2 = d * d;
+             float m2 = m * m;
+             return exp( (d2 - 1.0)/(d2 * m2) ) / (m2 * d2 * d2);
+         }
+
+         float Fresnel( float c, float f0 ) {
+             float sf = sqrt( f0 );
+             float n = ( 1.0 + sf )/( 1.0 - sf );
+             float g = sqrt( n*n + c*c - 1.0 );
+             float ga = ( c*(g + c) - 1.0 ) * ( c*(g + c) - 1.0 );
+             float gb = ( c*(g - c) + 1.0 ) * ( c*(g - c) + 1.0 );
+             return (g - c) * (g - c) / ( 2.0*(g + c) + (g + c) ) * ( 1.0 + ga / gb );
+         }
+
+         vec3 BlinnPhongReflection( vec3 C, vec3 L, vec3 N, vec3 V ) {
+             float ka = 0.3;
+             float kd = 0.5;
+             float ks = 0.8;
+             float n = 50.0;
+             float sp = 0.3; // 鏡面反射係数
+             float mi = 0.2; // 面のあらさ
+
+             vec3 H = normalize( V + L );
+             float hn = dot( H, N );
+             float ln = dot( L, N );
+             float lh = dot( L, H );
+             float vn = dot( V, N );
+             float vh = dot( V, H );
+
+             float dd = max( ln, 0.0 );
+             float D = BechmannDistribution( hn, mi );
+             float T = 2.0 * hn / vh;
+             float G = min( 1.0, min( T * vn, T * ln ) );
+             float F = Fresnel( lh, sp );
+             float M = 3.14159265 * vn * ln;
+             float ds = max( D * G * F / M, 0.0 );
+             if ( dd <= 0.0 ) { ds = 0.0; }
+             float Ia = ka;
+             float Id = kd * dd;
+             float Is = ks * ds;
+             return C * ( Ia + Id + Is );
+         }
+
+          void main() {
+              vec3 C = point_color;
+              vec3 L = normalize( light_position - point_position.xyz );
+              vec3 N = normalize( normal_vector );
+              vec3 V = normalize( viewing_direction );
+
+              vec3 shaded_color = BlinnPhongReflection( C, L, N, V );
+              gl_FragColor = vec4( shaded_color, 1.0 );
+     	 }
+	</script>
+	<script src="main4.js"></script>
+	<script>
+	 main();
+	</script>
+    </body>
+</html>
