@@ -33,7 +33,7 @@
              float kd = 0.5;
              float ks = 0.8;
              float n = 50.0;
-             
+
              float dd = max( dot( N, L ), 0.0 );
              float ds = pow( max( dot( normalize( V + L ), N ), 0.0 ), n );
              if ( dd <= 0.0 ) { ds = 0.0; }

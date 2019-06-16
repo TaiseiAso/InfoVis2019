@@ -1,3 +1,4 @@
+// 直方体の黒色格子を描画
 function Bounds( volume ) {
     var geometry = new THREE.Geometry();
     var material = new THREE.LineBasicMaterial();
