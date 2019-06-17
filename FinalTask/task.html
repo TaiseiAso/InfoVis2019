@@ -14,9 +14,9 @@
         <script src="js/Ground.js"></script>
     	<script src="js/main.js"></script>
         <script src="js/Lut.js"></script>
-        <script src="http://naohisas.github.io/KVS.js/Build/KVS.min.js"></script>
-    	<script src="http://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script>
-    	<script src="http://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
+        <script src="js/KVS.min.js"></script>
+    	<script src="js/KVS2THREE.min.js"></script>
+    	<script src="js/KVSLobsterData.js"></script>
 
         <!-- Phong Shading -->
         <script type="x-shader/x-vertex" id="phong.vert">
@@ -220,8 +220,8 @@
                 float sp = 0.3;
                 float mi = 0.4;
 
-                float low = 0.15;
-                float interval = 0.4;
+                float low = 0.2;
+                float interval = 0.3;
 
                 vec3 V = normalize( camera_direction );
                 vec3 H = normalize( V + L );
@@ -466,8 +466,8 @@
                 float sp = 0.3;
                 float mi = 0.4;
 
-                float low = 0.15;
-                float interval = 0.4;
+                float low = 0.2;
+                float interval = 0.3;
 
                 vec3 V = normalize( camera_direction );
                 vec3 H = normalize( V + L );
@@ -533,8 +533,8 @@
         <!-- UIの配置領域 -->
         <div id="controller">
             <h2>Isovalue</h2>
-            <input type="range" min="0" max="255" step="1" id="isovalue" value="128" style="width:70%;"/>
-            &nbsp;<span id="view_isovalue">128</span>
+            <input type="range" min="0" max="255" step="1" id="isovalue" value="50" style="width:70%;"/>
+            &nbsp;<span id="view_isovalue">50</span><br>
             <br>
 
             <h2>Shading</h2>
@@ -553,8 +553,8 @@
             </form><br>
 
             <h2>Extra</h2>
-            &emsp;<input type="checkbox" id="bounds"> Bounds<br>
-            &emsp;<input type="checkbox" id="ground"> Ground<br>
+            &emsp;<input type="checkbox" id="bounds" checked="checked"/> Bounds<br>
+            &emsp;<input type="checkbox" id="ground"/> Ground<br>
             <br>
 
             <button id="apply" style="width:100%;">Apply</button>
@@ -574,11 +574,62 @@
 
         <!-- 説明 -->
         <div id="explain">
-            <h1>情報可視化論　最終課題</h1>
-            <p>
-                あああああああああああああああああああああああああああああああああああ
-                あああああああああああああああああああああああああああああああああああ
-            </p>
+            <h1>情報可視化論　最終課題</h1><br>
+
+            <h2>基本操作</h2>
+            <div class="box">
+                <h3>Isovalue</h3>
+                <p>
+                    スライダーを用いて Isovalue の値を 0から1まで 変化させることができます．
+                    スライダーの現在の値が右隣に常に表示されるようになっています．
+                </p><br>
+
+                <h3>Shading</h3>
+                <p>
+                    シェーダーを Phong と Gourand で切り替えられますが，見た目上の差はあまりありません．
+                </p><br>
+
+                <h3>Refrection</h3>
+                <p>
+                    反射モデルを Phong，Lambert，Blinn-Phong，Cook-Torrance，Toon に切り替えられます．
+                    Toon Reflection は，Cook-Torrance Reflection を拡張した簡易モデルであり，
+                    描画する色の3次元カラーベクトルの，L2ノルムが段階的になるように補正することで実現しています．
+                    ここでは，L2ノルムが [ 0.2, 0.5, 0.8 ] にフィットするように設定しています．
+                    色の明るさしか考慮しておらず，色相の違いは補正していません．
+                    また，輪郭の描画は行っていません．
+                </p><br>
+
+                <h3>Extra</h3>
+                <p>
+                    Bounds にチェックを入れることで，表示する3Dモデルの外枠を描画することができます．
+                    Ground にチェックを入れることで，簡易な地面を描画することができます．
+                </p><br>
+
+                <h3>Apply</h3>
+                <p>
+                    各操作を画面に反映させます．操作後には必ずこのボタンを押してください．
+                </p>
+            </div>
+            <br>
+
+            <h2>工夫点</h2>
+            <div class="box">
+                <p>
+                    今回は変更可能な項目が多いため，それぞれの変更時に逐一再描画するのではなく，
+                    すべての変更点を一度に Apply するほうが計算コストが良いと考え，Applyボタンを実装しました．
+                </p>
+                <p>
+                    再描画の際に，geometry と material を dispose() することでキャッシュが残らないようにしています．
+                </p>
+                <p>
+                    設定項目と画面に表示されている3Dモデルに差異が発生しないように，ブラウザページをリロードした際も，
+                    設定項目の値を取得して再描画できるように実装しています．
+                </p>
+                <p>
+                    ブラウザページが見やすくなるように，ヘッダーとフッターを固定し，設定項目の画面の背景を半透明にしました．
+                    その他の微調整を含め，CSS を用いてスタイルを実装しています．
+                </p>
+            </div>
         </div>
 
         <!-- フッター -->

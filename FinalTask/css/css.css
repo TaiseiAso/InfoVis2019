@@ -69,3 +69,10 @@ p {
     background-color: #313131;
     z-index: 2;
 }
+
+.box {
+    padding: 0.5em 1em;
+    width: 90%;
+    border: solid 3px #515151;
+    border-radius: 10px;
+}
